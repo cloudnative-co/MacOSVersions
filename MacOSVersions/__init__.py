@@ -43,7 +43,7 @@ class Versions(list):
                         version_code.append(str(revision))
                     d = {
                         "name": name,
-                        "version": version_code
+                        "version": ".".join(version_code)
                     }
                     self.append(d)
                     self.name_dict[name].append(d)
