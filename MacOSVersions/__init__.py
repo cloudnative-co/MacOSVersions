@@ -18,31 +18,35 @@ class Versions(list):
         url = "https://support.apple.com/en-us/HT201260"
         response = session.get(url, headers=headers)
         soup = BeautifulSoup(response.text, "lxml")
-        names=[]
-        for h2 in soup.find_all("h2"):
-            if h2.text == "Check About This Mac":
-                continue
-            if h2.text == "Earlier versions of OS X":
-                break
-            names.append(h2.text)
-            self.name_dict[h2.text] = list()
 
-        count = 0
         for tbl in soup.find_all('table'):
-            name = names[count]
             for tr in tbl.find_all("tr"):
                 data = tr("td")
                 if len(data) == 0:
                     continue
-                d = {
-                    "name": name,
-                    "version": data[0].text.strip(),
-                    "build": data[1].text.strip()
-                }
-                self.append(d)
-                self.name_dict[name].append(d)
+                name =  data[0].text.strip()
+                version = data[1].text.strip()
+                self.name_dict[name] = list()
+                ver_code = version.split(".")
+                if (len(ver_code)) == 2:
+                    ver_code.append("0")
 
-            count = count + 1
+                major = ver_code[0]
+                minnor = ver_code[1]
+                latest_rev = int(ver_code[2])
+                for revision in range(latest_rev, 0, -1):
+                    version_code = [
+                        major,
+                        minnor,
+                    ]
+                    if revision != 0:
+                        version_code.append(str(revision))
+                    d = {
+                        "name": name,
+                        "version": version_code
+                    }
+                    self.append(d)
+                    self.name_dict[name].append(d)
 
     def name(self, name: str = None):
         if name is None:
