@@ -34,7 +34,7 @@ class Versions(list):
                 major = ver_code[0]
                 minnor = ver_code[1]
                 latest_rev = int(ver_code[2])
-                for revision in range(latest_rev, 0, -1):
+                for revision in range(latest_rev, -1, -1):
                     version_code = [
                         major,
                         minnor,
