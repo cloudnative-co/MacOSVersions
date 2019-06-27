@@ -35,6 +35,8 @@ class Versions(list):
                 minnor = ver_code[1]
                 latest_rev = int(ver_code[2])
                 for revision in range(latest_rev, -1, -1):
+                    if not (major.isdecimal() and minnor.isdecimal()):
+                        continue
                     version_code = [
                         major,
                         minnor,
