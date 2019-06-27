@@ -26,17 +26,17 @@ class Versions(list):
                     continue
                 name =  data[0].text.strip()
                 version = data[1].text.strip()
-                self.name_dict[name] = list()
                 ver_code = version.split(".")
-                if (len(ver_code)) == 2:
-                    ver_code.append("0")
-
                 major = ver_code[0]
                 minnor = ver_code[1]
+                if not (major.isdecimal() and minnor.isdecimal()):
+                    continue
+                if (len(ver_code)) == 2:
+                    ver_code.append("0")
                 latest_rev = int(ver_code[2])
+                self.name_dict[name] = list()
+
                 for revision in range(latest_rev, -1, -1):
-                    if not (major.isdecimal() and minnor.isdecimal()):
-                        continue
                     version_code = [
                         major,
                         minnor,
